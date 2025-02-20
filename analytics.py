@@ -28,7 +28,7 @@ criteria=[0	,0	,0.005	,0.002	,0	,0.9	,0.94	,0.97	,1	,0	,1	,1	,1	,1	,0	,0]
 symbol=['>','>','>','>','>','<','<','<','<','>','<','<','<','<','>','>']
 
 app = dash.Dash(__name__, title="Ryan Chien Website")
-# server = app.server
+server = app.server
 
 
 
@@ -252,4 +252,4 @@ def update_pie_chart(value):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8085)
+    app.server(host='0.0.0.0', port=8085)
