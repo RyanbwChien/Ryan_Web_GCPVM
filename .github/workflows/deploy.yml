@@ -1,0 +1,43 @@
+name: Deploy Flask App to GCP
+
+on:
+  push:
+    branches:
+      - main  # 當 main 分支發生變動時觸發部署
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # 使用 Ubuntu 作為運行環境
+
+    steps:
+      # 1. Checkout 代碼
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. 登入 Docker Hub
+      - name: Docker Hub Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # 使用 GitHub Secrets 中的 DOCKER_USERNAME
+          password: ${{ secrets.DOCKER_PASSWORD }}  # 使用 GitHub Secrets 中的 DOCKER_PASSWORD
+
+      # 3. 構建並推送 Docker 映像到 Docker Hub
+      - name: Build and push Docker image to Docker Hub
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest
+
+      # 4. SSH 進入 GCE VM 並更新 Docker 容器
+      - name: SSH into GCE VM and pull latest Docker image
+        uses: appleboy/ssh-action@v0.1.1  # 使用 SSH Action
+        with:
+          host: ${{ secrets.GCP_VM_IP }}  # 使用 GitHub Secrets 中的 GCP_VM_IP
+          username: ${{ secrets.GCP_VM_USER }}  # 使用 GitHub Secrets 中的 GCP_VM_USER
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}  # 使用 GitHub Secrets 中的 GCP_SSH_PRIVATE_KEY
+          script: |
+                CONTAINERS=$(docker ps -q --filter ancestor=${{ secrets.DOCKER_USERNAME }}/my-website-app:latest)
+                if [ -n "$CONTAINERS" ]; then
+                  docker stop $CONTAINERS
+                fi
+                docker pull ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest  # 拉取最新的 Docker 映像
+                docker run -d -p 8081:8085 ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest  # 啟動新的容器

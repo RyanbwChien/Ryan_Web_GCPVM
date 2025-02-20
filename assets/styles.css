@@ -1,0 +1,15 @@
+body {
+    background-color: black; /* 設定背景為全黑 */
+    margin: 0;               /* 移除預設邊距 */
+    padding: 0;              /* 移除預設內距 */
+    /* color: white;            設定文字顏色為白色，避免黑背景下文字不可見 */
+}
+
+.dash-container {
+    height: 100vh; /* 確保佔滿整個視窗高度 */
+    width: 100vw;
+    /* display: flex;*/
+    /* flex-direction: column;*/
+    justify-content: center;
+    align-items: center;
+}
