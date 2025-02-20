@@ -5,7 +5,6 @@ Created on Fri Jan 10 22:28:54 2025
 @author: user
 """
 
-import os
 
 import dash 
 import dash_core_components as dcc 
@@ -15,7 +14,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-server = app.server
+# server = app.server
 
 app.layout = html.Div([ html.H2('Hello World'), dcc.Dropdown( id='dropdown', options=[{'label': i, 'value': i} for i in ['LA', 'NYC', 'MTL']], value='LA' ), html.Div(id='display-value') ])
 
@@ -24,5 +23,5 @@ app.layout = html.Div([ html.H2('Hello World'), dcc.Dropdown( id='dropdown', opt
 def display_value(value): 
     return 'You have selected "{}"'.format(value)
 
-if __name__ == 'main': 
-    app.run_server(host='0.0.0.0', port=8085)
+if __name__ == '__main__': 
+    app.run_server(host='0.0.0.0', port=8085) #host='0.0.0.0', port=8085
