@@ -14,7 +14,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-# server = app.server
+server = app.server
 
 app.layout = html.Div([ html.H2('Hello World'), dcc.Dropdown( id='dropdown', options=[{'label': i, 'value': i} for i in ['LA', 'NYC', 'MTL']], value='LA' ), html.Div(id='display-value') ])
 
