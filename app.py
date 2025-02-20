@@ -25,4 +25,4 @@ def display_value(value):
     return 'You have selected "{}"'.format(value)
 
 if __name__ == 'main': 
-    app.run(host='0.0.0.0', port=8085)
+    app.run_server(host='0.0.0.0', port=8085)
