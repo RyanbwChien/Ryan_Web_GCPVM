@@ -24,8 +24,8 @@ jobs:
       # 3. 構建並推送 Docker 映像到 Docker Hub
       - name: Build and push Docker image to Docker Hub
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-website-app2:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-website-app2:latest
 
       # 4. SSH 進入 GCE VM 並更新 Docker 容器
       - name: SSH into GCE VM and pull latest Docker image
@@ -35,9 +35,9 @@ jobs:
           username: ${{ secrets.GCP_VM_USER }}  # 使用 GitHub Secrets 中的 GCP_VM_USER
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}  # 使用 GitHub Secrets 中的 GCP_SSH_PRIVATE_KEY
           script: |
-                CONTAINERS=$(docker ps -q --filter ancestor=${{ secrets.DOCKER_USERNAME }}/my-website-app:latest)
+                CONTAINERS=$(docker ps -q --filter ancestor=${{ secrets.DOCKER_USERNAME }}/my-website-app2:latest)
                 if [ -n "$CONTAINERS" ]; then
                   docker stop $CONTAINERS
                 fi
-                docker pull ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest  # 拉取最新的 Docker 映像
-                docker run -d -p 8081:8080 ${{ secrets.DOCKER_USERNAME }}/my-website-app:latest  # 啟動新的容器
+                docker pull ${{ secrets.DOCKER_USERNAME }}/my-website-app2:latest  # 拉取最新的 Docker 映像
+                docker run -d -p 8081:8080 ${{ secrets.DOCKER_USERNAME }}/my-website-app2:latest  # 啟動新的容器
