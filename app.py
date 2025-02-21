@@ -21,7 +21,7 @@ app.layout = html.Div([ html.H2('Hello World'), dcc.Dropdown( id='dropdown', opt
 @app.callback(dash.dependencies.Output('display-value', 'children'), 
               [dash.dependencies.Input('dropdown', 'value')]) 
 def display_value(value): 
-    return 'You have selected "{}"'.format(value)
+    return 'You have selected1 "{}"'.format(value)
 
 if __name__ == '__main__': 
     app.run_server(host='0.0.0.0', port=8080) #host='0.0.0.0', port=8085
